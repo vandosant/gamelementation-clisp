@@ -1,6 +1,6 @@
 (defpackage #:wizard-adventure
   (:use #:common-lisp)
-  (:export look walk))
+  (:export look walk pickup))
 
 (in-package #:wizard-adventure)
 
@@ -58,3 +58,10 @@
     (progn (setf *location* (car next))
 	   (look))
     '(you cannot go that way.))))
+
+(defun pickup (object)
+  (cond ((member object
+		 (objects-at *location* *objects* *object-locations*))
+	 (push (list object 'body) *object-locations*)
+	 `(you are now carrying the ,object))
+	(t '(you cannot get that.))))
